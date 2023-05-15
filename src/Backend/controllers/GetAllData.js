@@ -3,6 +3,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 // const url ="https://www.thecodehelp.in/";
 const express = require("express");
+const WebScrapSchema = require("../Models/WebScrap");
 const app = express();
 //bussiness logic
 async function getImage(url, res) {
@@ -14,15 +15,16 @@ async function getImage(url, res) {
       const $ = await cheerio.load(data);
       const text = $("body").text();
       const wordCount = text.trim().split(/\s+/).length; // word count stored;
-      const mediaElements = $("audio, video, source");
-      const anchorTags = $("a").attr('href');
+      const hrefLinks = [];
 
-      // Extract the href attribute from anchor tags
-    //   const webLinks = anchorTags
-    //     .map((index, element) => $(element).attr("href"))
-    //     .get();
-
-      console.log("Web Links:", anchorTags);
+    // Extract href links using the 'a' selector
+    $('a').each((index, element) => {
+      const href = $(element).attr('href');
+      if (href && href.substr(0,4) === "http") {
+        hrefLinks.push(href);
+      }
+    });
+    
       let imagesData1 = [];
 
       let imagesData2 = [];
@@ -36,18 +38,24 @@ async function getImage(url, res) {
           imagesData2.push(currImage2.split(","));
         }
       });
-      res.json({
+    //   const saveComment = await comment.save();
+    const favourites=false;
+      const currVal =res.json({
         weburl: url,
         wordCount: wordCount,
         payload: imagesData2,
         image2: imagesData1,
-        favourite: true,
+        MediaLinks: hrefLinks,
+        favourite: favourites,
       });
-      return wordCount; // this return as undefined
+      const allData = new WebScrapSchema({
+        url, wordCount,imagesData1,imagesData2,hrefLinks,favourites
+    })
+       const saveComment = await allData.save();
     });
   } catch (error) {
     console.log(error);
-    return "this is it";
+    return "error occured";
   }
 }
 

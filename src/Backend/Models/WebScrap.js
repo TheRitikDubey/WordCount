@@ -2,16 +2,28 @@ const mongoose = require('mongoose');
 
 //route Handler
 const webScrapSchema  = new mongoose.Schema({
-    body:  {
+    url:{
         type: String,
         require: true,
     },
-    images:{
+    wordCount:{
         type: String,
         require: true,
     },
-    videos:{
-        type: String,
+    imagesData1:{
+        type: [],
+        require: true,
+    },
+    imagesData2:{
+        type: [],
+        require: true,
+    },
+    hrefLinks:{
+        type:[],
+        require: true,
+    },
+    favourites:{
+        type: Boolean,
         require: true,
     }
 })
