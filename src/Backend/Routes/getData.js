@@ -6,6 +6,7 @@ const router  = express.Router();
 
 const { getDataFromUrl } = require("../controllers/GetAllData");
 const {getAllResults} = require("../controllers/GetDataFromDB");
+const {deleteData} = require("../controllers/deleteData");
 // const { Createpost,getAllPosts } = require("../Controllers/postControllers");
 // const  { likePosts, unlikePosts }  = require("../Controllers/likeController");
 
@@ -13,6 +14,7 @@ const {getAllResults} = require("../controllers/GetDataFromDB");
 // router.get("/postImage", postFun);
 router.post("/getImages",getDataFromUrl)
 router.get("/get/AllResults", getAllResults)
+router.post("/delete/url", deleteData)
 // router.post("/post/createPost",Createpost)
 // router.get("/getAllPosts", getAllPosts);
 // router.post("/likePost",likePosts);
